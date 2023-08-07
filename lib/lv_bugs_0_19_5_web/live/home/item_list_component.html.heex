@@ -1,0 +1,24 @@
+<div id={@id} class="flex flex-col gap-[24px]">
+  <div id={"Items-#{@id}"} phx-update="stream" class="h-[500px] overflow-y-auto flex flex-col">
+    <.live_component
+      :for={{ dom_id, item} <- @streams.items}
+      module={LvBugs0195Web.Live.Home.ItemComponent}
+      id={dom_id}
+      item={item}
+    />
+  </div>
+
+  <div class="flex gap-[8px] justify-between">
+    <.button type="button" phx-click="prepend_random_item" phx-target={@myself}>
+      Prepend a random item
+    </.button>
+
+    <.button type="button" phx-click="append_random_item" phx-target={@myself}>
+      Append a random item
+    </.button>
+
+    <.button type="button" phx-click="reset_items" phx-target={@myself}>
+      Reset items
+    </.button>
+  </div>
+</div>

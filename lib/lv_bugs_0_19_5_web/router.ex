@@ -18,6 +18,8 @@ defmodule LvBugs0195Web.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    live "/live", Live.Home
   end
 
   # Other scopes may use custom stacks.
