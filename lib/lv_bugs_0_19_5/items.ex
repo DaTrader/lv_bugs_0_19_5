@@ -1,5 +1,5 @@
 defmodule LvBugs0195.Items do
-  alias LvBugs0195.Items.Item
+  alias LvBugs0195.Items.{ Item, Color}
 
   @appliances [
     "Refrigerator",
@@ -40,5 +40,15 @@ defmodule LvBugs0195.Items do
 
   def random_item_name() do
     Enum.random( @appliances)
+  end
+
+  def load_available_colors() do
+    [
+      Color.new( id: "0cf75ef4-49e2-46bc-bf79-340c04423e9a", name: "Red", rgb: "#ff0000"),
+      Color.new( id: "1a76adc7-3973-41e4-8a96-577c7d27a247", name: "White", rgb: "#ffffff"),
+      Color.new( id: "6ec30fce-b5fb-485c-affc-58e28c530738", name: "Blue", rgb: "#0000ff"),
+      Color.new( id: "9a1350fb-f953-4251-b901-62faf3507d16", name: "Yellow", rgb: "#ffff00"),
+      Color.new( id: "ef34a8a9-299d-4836-aa68-9789cc0eac35", name: "Black", rgb: "#000000")
+    ]
   end
 end

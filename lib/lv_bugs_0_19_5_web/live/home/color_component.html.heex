@@ -1,0 +1,15 @@
+<div id={@id}>
+  <.button
+    type="button"
+    phx-click="pick_color" phx-value-color={@color.id} phx-target={@target}
+    class={
+      "!px-[3px] !py-[1px] !rounded-none flex gap-[8px] items-center !bg-white hover:!bg-black/10 focus:!bg-black/20"
+    }
+  >
+    <div class="w-[12px] h-[12px] border border-black rounded-[4px]" style={"background: #{ @color.rgb}"}>&nbsp;</div>
+
+    <span class="text-[10px] leading-[10px] text-black">
+      <%= @color.name %>
+    </span>
+  </.button>
+</div>

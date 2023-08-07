@@ -1,4 +1,4 @@
-<div id={@id} class="min-w-[200px] gap-[12px] flex flex items-center px-[24px]">
+<div id={@id} class="min-w-[200px] gap-[12px] flex items-start px-[24px]">
   <.icon name="hero-photo" class="w-[64px] h-[64px]"/>
 
   <div
@@ -10,8 +10,27 @@
       <%= @item.name %>
     </div>
 
-    <div class="text-[12px] leading-[16px] self-end">
-      Quantity: <%= @item.qty %>
+    <div class="flex gap-[24px] items-start">
+      <div id={"Colors-#{@id}"} phx-update="stream" class="flex flex-col">
+        <.live_component
+          :for={{ dom_id, color} <- @streams.colors}
+          module={LvBugs0195Web.Live.Home.ColorComponent}
+          id={dom_id}
+          color={color}
+          target={@myself}
+        />
+      </div>
+
+      <.button
+        type="button" phx-click="reset_colors" phx-target={@myself}
+        class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
+      >
+        Reset colors
+      </.button>
     </div>
+
+    <span class="self-end text-[12px]">
+      Quantity: <%= @item.qty %>
+    </span>
   </div>
 </div>
