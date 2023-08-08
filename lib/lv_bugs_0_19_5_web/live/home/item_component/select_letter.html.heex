@@ -1,0 +1,50 @@
+<div id={@id} class="flex" x-data>
+  <div x-ref="control">
+    <%= render_slot( @inner_block) %>
+  </div>
+
+  <div
+    :if={@open?}
+    id={"Overlay-#{ @id}"}
+    class="fixed inset-0 z-20 overflow-hidden transform"
+    role="dialog" aria-modal="true"
+    phx-remove={
+      JS.hide(
+        to: "#Main-#{ @id}",
+        transition: { "transition ease-in duration-75", "opacity-100 scale-100", "opacity-0 scale-95"}
+      )
+    }
+  >
+    <div
+      id={"Positioned-#{ @id}"}
+      class="absolute animate-fade-in-scale"
+      x-init="
+        rect = $refs.control.getBoundingClientRect();
+        $el.style.top = `${ Math.round( rect.top - 80)}px`;
+        $el.style.left = `${ Math.round( rect.left - 80)}px`;
+      "
+    >
+      <div
+        id={"Main-#{ @id}"}
+        class={[
+          "flex p-[16px] gap-[16px] text-[32px] leading-[32px] ",
+          "border rounded-[8px] border-black/20 shadow-[0_1px_10px_rgba(0,0,0,0.1)] bg-white"
+        ]}
+        phx-target={@target}
+        phx-click-away="close_select_letter"
+        phx-window-keydown="close_select_letter"
+        phx-key="escape"
+        x-trap="true"
+      >
+        <button
+          :for={letter <- String.split( "A B C")}
+          type="button"
+          phx-click="select_letter" phx-target={@target} phx-value-letter={letter}
+          class="w-[40px] h-[40px] flex items-center justify-center rounded-[4px] focus:bg-black/10 hover:bg-black/20"
+        >
+          <%= letter %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

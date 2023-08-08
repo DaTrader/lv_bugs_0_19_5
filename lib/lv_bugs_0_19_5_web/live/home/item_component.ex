@@ -8,6 +8,8 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
       socket
       |> stream_configure( :colors, dom_id: &dom_id( &1, myself( socket)))
       |> assign_ensuring( :init)
+      |> assign_open_select_letter( false)
+      |> assign_carousel( nil)
 
     { :ok, socket}
   end
@@ -32,6 +34,23 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
         "reset_colors" ->
           colors = socket.assigns.colors
           stream( socket, :colors, colors, reset: true)
+
+        "open_select_letter" ->
+          assign_open_select_letter( socket, true)
+
+        "close_select_letter" ->
+          assign_open_select_letter( socket, false)
+
+        "select_letter" ->
+          assign_open_select_letter( socket, false)
+
+        "start_carousel" ->
+          socket
+          |> assign_carousel( 0)
+          |> ensure_assigns_available()
+
+        "stop_carousel" ->
+          assign_carousel( socket, nil)
       end
 
     { :noreply, socket}
@@ -58,6 +77,20 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     |> assign_ensuring( nil)
   end
 
+  defp ensure_assigns_available( %{ assigns: %{ carousel: carousel}} = socket) when not is_nil( carousel) do
+    %{
+      id: id,
+      colors: colors,
+      carousel: carousel
+    } = socket.assigns
+
+    send_update_after( __MODULE__, %{ id: id}, 2000)
+
+    socket
+    |> stream_insert( :colors, Enum.at( colors, carousel), at: 0)
+    |> assign_carousel( rem( carousel + 1, length( colors)))
+  end
+
   defp ensure_assigns_available( socket) do
     socket
   end
@@ -79,4 +112,14 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
   defp assign_ensuring( socket, ensuring) do
     assign( socket, :ensuring, ensuring)
   end
+
+  defp assign_open_select_letter( socket, open_select_letter?) do
+    assign( socket, :open_select_letter?, open_select_letter?)
+  end
+
+  defp assign_carousel( socket, carousel) do
+    assign( socket, :carousel, carousel)
+  end
+
+  embed_templates "item_component/*"
 end
