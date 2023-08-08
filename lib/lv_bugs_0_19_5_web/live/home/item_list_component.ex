@@ -53,19 +53,11 @@ defmodule LvBugs0195Web.Live.Home.ItemListComponent do
   end
 
   defp new_random_item() do
-    qty = Enum.random( 1 .. 50)
-
-    item = Item.new(
+    Item.new(
       id: Items.new_item_id(),
       name: Items.random_item_name(),
-      qty: qty
+      qty: Enum.random( 1 .. 50)
     )
-
-    if rem( qty, 2) == 0 do
-      item
-    else
-      %{ client_update: :whatever, item: item, id: item.id}
-    end
   end
 
   defp dom_id( item) do
