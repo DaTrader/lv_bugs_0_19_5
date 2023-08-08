@@ -38,5 +38,5 @@ delay.
 
 [Issue #2711](https://github.com/phoenixframework/phoenix_live_view/issues/2711)
 
-Click a "Start carousel" button and then "Open Popup". As soon as the appliance item gets updated to rotate
-the colors, the popup will lose its coordinates and get placed in the top left corner.
+Click a "Start carousel" button and then the "Open Popup" button next to it. As soon as the appliance item gets updated
+to rotate the colors, the popup will lose its coordinates and get placed in the top left corner.
