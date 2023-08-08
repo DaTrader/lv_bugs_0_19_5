@@ -4,6 +4,7 @@
 
 Make sure to run `npm install` in `/assets` to install AlpineJS and its focus plugin. 
 
+The url is: `http://localhost:4000/live`
 
 ## Demoed Bugs
 
