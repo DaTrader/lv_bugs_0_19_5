@@ -31,7 +31,7 @@
 
         <div class="flex gap-[8px]">
           <.button
-            :if={!@carousel}
+            :if={!@carousel_state}
             type="button" phx-click="start_carousel" phx-target={@myself}
             class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
           >
@@ -41,7 +41,7 @@
           </.button>
 
           <.button
-            :if={@carousel}
+            :if={@carousel_state}
             type="button" phx-click="stop_carousel" phx-target={@myself}
             class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
           >

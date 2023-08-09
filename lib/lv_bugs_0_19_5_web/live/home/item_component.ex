@@ -9,12 +9,26 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
       |> stream_configure( :colors, dom_id: &dom_id( &1, myself( socket)))
       |> assign_ensuring( :init)
       |> assign_open_select_letter( false)
-      |> assign_carousel( nil)
+      |> assign_color_index( 0)
+      |> assign_carousel_state( nil)
 
     { :ok, socket}
   end
 
   @impl true
+  def update( %{ event: :carousel_loop}, socket) do
+    socket =
+      if socket.assigns.carousel_state do
+        socket
+        |> assign_carousel_state( :move)
+        |> ensure_assigns_available()
+      else
+        socket
+      end
+
+    { :ok, socket}
+  end
+
   def update( new_assigns, socket) do
     socket =
       socket
@@ -46,11 +60,11 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
 
         "start_carousel" ->
           socket
-          |> assign_carousel( 0)
+          |> assign_carousel_state( :move)
           |> ensure_assigns_available()
 
         "stop_carousel" ->
-          assign_carousel( socket, nil)
+          assign_carousel_state( socket, nil)
       end
 
     { :noreply, socket}
@@ -77,18 +91,19 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     |> assign_ensuring( nil)
   end
 
-  defp ensure_assigns_available( %{ assigns: %{ carousel: carousel}} = socket) when not is_nil( carousel) do
+  defp ensure_assigns_available( %{ assigns: %{ carousel_state: :move}} = socket) do
     %{
       id: id,
       colors: colors,
-      carousel: carousel
+      color_index: color_index
     } = socket.assigns
 
-    send_update_after( __MODULE__, %{ id: id}, 2000)
+    send_update_after( __MODULE__, %{ id: id, event: :carousel_loop}, 2000)
 
     socket
-    |> stream_insert( :colors, Enum.at( colors, carousel), at: 0)
-    |> assign_carousel( rem( carousel + 1, length( colors)))
+    |> stream_insert( :colors, Enum.at( colors, color_index), at: 0)
+    |> assign_color_index( rem( color_index + 1, length( colors)))
+    |> assign_carousel_state( :wait)
   end
 
   defp ensure_assigns_available( socket) do
@@ -117,8 +132,12 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     assign( socket, :open_select_letter?, open_select_letter?)
   end
 
-  defp assign_carousel( socket, carousel) do
-    assign( socket, :carousel, carousel)
+  defp assign_color_index( socket, color_index) do
+    assign( socket, :color_index, color_index)
+  end
+
+  defp assign_carousel_state( socket, carousel_state) do
+    assign( socket, :carousel_state, carousel_state)
   end
 
   embed_templates "item_component/*"
