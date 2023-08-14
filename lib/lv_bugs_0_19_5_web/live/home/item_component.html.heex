@@ -1,69 +1,75 @@
-<div id={@id} class="min-w-[200px] gap-[12px] flex items-start px-[24px]">
+<div id={@id}>
   <.icon name="hero-photo" class="w-[64px] h-[64px]"/>
 
   <div
-    class="flex-1 flex flex-col gap-[8px]"
-    x-data="{ changeBg: false }"
-    x-init="changeBg = true;"
+    :if={!Map.get( @item, :prepend?)}
+    id={"Main-#{@id}"}
+    class="min-w-[200px] gap-[12px] flex items-start px-[24px]"
   >
-    <div class="font-semibold" x-bind:class="changeBg ? 'underline' : ''">
-      <%= @item.name %>
-    </div>
-
-    <div class="flex gap-[24px] items-start">
-      <div id={"Colors-#{@id}"} phx-update="stream" class="flex flex-col">
-        <.live_component
-          :for={{ dom_id, color} <- @streams.colors}
-          module={LvBugs0195Web.Live.Home.ColorComponent}
-          id={dom_id}
-          color={color}
-          target={@myself}
-        />
+    <div
+      class="flex-1 flex flex-col gap-[8px]"
+      x-data="{ changeBg: false }"
+      x-init="changeBg = true"
+    >
+      <div class="font-semibold" x-bind:class="changeBg ? 'underline' : ''">
+        <%= @item.name %>
       </div>
 
-      <div class="flex-1 flex justify-between">
-        <.button
-          type="button" phx-click="reset_colors" phx-target={@myself}
-          class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
-        >
-          Reset colors
-        </.button>
+      <div class="flex gap-[24px] items-start">
+        <div id={"Colors-#{@id}"} phx-update="stream" class="flex flex-col">
+          <.live_component
+            :for={{ dom_id, color} <- @streams.colors}
+            module={LvBugs0195Web.Live.Home.ColorComponent}
+            id={dom_id}
+            color={color}
+            target={@myself}
+          />
+        </div>
 
-        <div class="flex gap-[8px]">
+        <div class="flex-1 flex justify-between">
           <.button
-            :if={!@carousel_state}
-            type="button" phx-click="start_carousel" phx-target={@myself}
+            type="button" phx-click="reset_colors" phx-target={@myself}
             class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
           >
-            <span class="text-blue-500">
-              Start Carousel
-            </span>
+            Reset colors
           </.button>
 
-          <.button
-            :if={@carousel_state}
-            type="button" phx-click="stop_carousel" phx-target={@myself}
-            class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
-          >
-            <span class="text-red-500">
-              Stop Carousel
-            </span>
-          </.button>
-
-          <.select_letter id={"SelectLetter-#{@id}"} target={@myself} open?={@open_select_letter?}>
+          <div class="flex gap-[8px]">
             <.button
-              type="button" phx-click="open_select_letter" phx-target={@myself}
+              :if={!@carousel_state}
+              type="button" phx-click="start_carousel" phx-target={@myself}
               class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
             >
-              Open Popup
+              <span class="text-blue-500">
+                Start Carousel
+              </span>
             </.button>
-          </.select_letter>
+
+            <.button
+              :if={@carousel_state}
+              type="button" phx-click="stop_carousel" phx-target={@myself}
+              class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
+            >
+              <span class="text-red-500">
+                Stop Carousel
+              </span>
+            </.button>
+
+            <.select_letter id={"SelectLetter-#{@id}"} target={@myself} open?={@open_select_letter?}>
+              <.button
+                type="button" phx-click="open_select_letter" phx-target={@myself}
+                class="!p-[4px] !bg-white !border !border-black !text-black text-[12px] leading-[16px] items-center"
+              >
+                Open Popup
+              </.button>
+            </.select_letter>
+          </div>
         </div>
       </div>
-    </div>
 
-    <span class="self-end text-[12px]">
-      Quantity: <%= @item.qty %>
-    </span>
+      <span class="self-end text-[12px]">
+        Quantity: <%= @item.qty %>
+      </span>
+    </div>
   </div>
 </div>

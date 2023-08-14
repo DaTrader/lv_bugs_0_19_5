@@ -14,6 +14,12 @@ defmodule LvBugs0195Web.Live.Home.ItemListComponent do
   end
 
   @impl true
+  def update( %{ event: :prepend_item} = new_assigns, socket) do
+    socket = stream_insert( socket, :items, new_assigns.item, at: 0)
+
+    { :ok, socket}
+  end
+
   def update( new_assigns, socket) do
     socket =
       socket
@@ -28,7 +34,9 @@ defmodule LvBugs0195Web.Live.Home.ItemListComponent do
     socket =
       case event do
         "prepend_random_item" ->
-          stream_insert( socket, :items, new_random_item(), at: 0)
+          item = new_random_item()
+          send_update( __MODULE__, %{ id: socket.assigns.id, event: :prepend_item, item: item})
+          stream_insert( socket, :items, item |> Map.put( :prepend?, true))
 
         "append_random_item" ->
           stream_insert( socket, :items, new_random_item())
