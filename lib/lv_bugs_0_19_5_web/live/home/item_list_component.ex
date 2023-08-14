@@ -34,7 +34,7 @@ defmodule LvBugs0195Web.Live.Home.ItemListComponent do
           stream_insert( socket, :items, new_random_item())
 
         "reset_items" ->
-          stream( socket, :items, Items.load_initial_batch(), reset: true)
+          stream( socket, :items, [ new_random_item() | Items.load_initial_batch()], reset: true)
       end
 
     { :noreply, socket}

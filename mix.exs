@@ -37,7 +37,7 @@ defmodule LvBugs0195.MixProject do
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
 #      {:phoenix_live_view, "~> 0.19.0"},
-      {:phoenix_live_view, git: "https://github.com/phoenixframework/phoenix_live_view.git", ref: "8c2b2be138ee8476c163a5a8748becbc4db7d491"},
+      {:phoenix_live_view, git: "https://github.com/phoenixframework/phoenix_live_view.git", ref: "ba9065c76b38be55eb91fbad5a641746092be5ed"},
       {:floki, ">= 0.30.0", only: :test},
       {:esbuild, "~> 0.7", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2.0", runtime: Mix.env() == :dev},
