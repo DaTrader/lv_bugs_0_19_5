@@ -18,11 +18,13 @@
     <div
       id={"Positioned-#{ @id}"}
       class="absolute animate-fade-in-scale"
+      x-data="{ positionStyle: '' }"
       x-init="
         rect = $refs.control.getBoundingClientRect();
-        $el.style.top = `${ Math.round( rect.top - 80)}px`;
-        $el.style.left = `${ Math.round( rect.left - 80)}px`;
+        positionStyle=`top: ${ Math.round( rect.top - 80)}px; left: ${ Math.round( rect.left - 80)}px`;
       "
+      style=""
+      x-bind:style="positionStyle"
     >
       <div
         id={"Main-#{ @id}"}
