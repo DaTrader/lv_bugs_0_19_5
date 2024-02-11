@@ -29,6 +29,17 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     { :ok, socket}
   end
 
+  # when the parent stream resets, we reset the colors and stop the carousel
+  def update(%{reset: true}, socket) do
+    colors = socket.assigns.colors
+    socket =
+      socket
+      |> stream(:colors, colors, reset: true)
+      |> assign_carousel_state(nil)
+
+    {:ok, socket}
+  end
+
   def update( new_assigns, socket) do
     socket =
       socket
@@ -74,7 +85,10 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     colors = socket.assigns.colors
 
     if color = Enum.find( colors, & &1.id == color_id) do
-      stream_insert( socket, :colors, color, at: 0)
+      socket
+      # this is not a bug, to reorder you need to first delete and then insert
+      |> stream_delete(:colors, color)
+      |> stream_insert(:colors, color, at: 0)
     else
       socket
     end
@@ -101,6 +115,8 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     send_update_after( __MODULE__, %{ id: id, event: :carousel_loop}, 2000)
 
     socket
+    # this is not a bug, to reorder you need to first delete and then insert
+    |> stream_delete( :colors, Enum.at( colors, color_index))
     |> stream_insert( :colors, Enum.at( colors, color_index), at: 0)
     |> assign_color_index( rem( color_index + 1, length( colors)))
     |> assign_carousel_state( :wait)

@@ -39,6 +39,10 @@ Alpine.start();
 const InitAlpine = {
   mounted() {
     Alpine.initTree( this.el);
+  },
+  // without this Alpine complains after a couple of resets
+  updated() {
+    Alpine.initTree( this.el);
   }
 };
 
