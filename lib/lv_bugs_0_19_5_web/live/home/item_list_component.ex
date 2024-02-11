@@ -34,15 +34,7 @@ defmodule LvBugs0195Web.Live.Home.ItemListComponent do
           stream_insert( socket, :items, new_random_item())
 
         "reset_items" ->
-          items = Items.load_initial_batch()
-          # because you use **stateful** LiveComponents, they keep their state
-          # and therefore also the position of the nested colors, for example
-          # if you don't want this, don't use LiveComponents or, like here,
-          # send them an update to reset their state as you wish
-          for item <- items do
-            send_update(LvBugs0195Web.Live.Home.ItemComponent, id: dom_id(item), reset: true)
-          end
-          stream(socket, :items, items, reset: true)
+          stream( socket, :items, Items.load_initial_batch(), reset: true)
       end
 
     { :noreply, socket}

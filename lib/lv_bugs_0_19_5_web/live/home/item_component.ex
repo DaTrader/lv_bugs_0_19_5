@@ -29,17 +29,6 @@ defmodule LvBugs0195Web.Live.Home.ItemComponent do
     { :ok, socket}
   end
 
-  # when the parent stream resets, we reset the colors and stop the carousel
-  def update(%{reset: true}, socket) do
-    colors = socket.assigns.colors
-    socket =
-      socket
-      |> stream(:colors, colors, reset: true)
-      |> assign_carousel_state(nil)
-
-    {:ok, socket}
-  end
-
   def update( new_assigns, socket) do
     socket =
       socket
