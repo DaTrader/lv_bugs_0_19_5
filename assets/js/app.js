@@ -33,9 +33,23 @@ window.Alpine = Alpine;
 Alpine.plugin( focus);
 Alpine.start();
 
+/**
+ * Initializes alpine tree manually to circumvent issue #2657
+ */
+const InitAlpine = {
+  mounted() {
+    Alpine.initTree( this.el);
+  }
+};
+
+let hooks = {
+  InitAlpine: InitAlpine
+};
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket( "/live", Socket, {
   params: { _csrf_token: csrfToken},
+  hooks: hooks,
   dom: {
     onBeforeElUpdated( from, to) {
       if ( from._x_dataStack) {
